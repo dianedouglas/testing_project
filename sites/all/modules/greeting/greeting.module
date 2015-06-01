@@ -1,6 +1,5 @@
 <?php
 function greeting_menu() {
-    $items = array();
     $items['hello_friend'] = array(
         'title' => "Hello Friend!",
         'page callback' => 'say_hello',
