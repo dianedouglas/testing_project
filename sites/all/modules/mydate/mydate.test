@@ -39,6 +39,22 @@ class MyDateTestCase extends DrupalUnitTestCase
         //pass in $description for display. 
         $this->assertTrue($result, $description);
 
+        //Here are the rest of the tests from the example
+        $description = 'A NULL value should return TRUE.';
+        $input = NULL;
+        $result = mydate_empty_mysql_date($input);
+        $this->assertTrue($result, $description);
+
+        $description = 'An "empty" MySQL DATE should return TRUE.';
+        $input = '0000-00-00';
+        $result = mydate_empty_mysql_date($input);
+        $this->assertTrue($result, $description);
+
+        $description = 'A valid date should return FALSE.';
+        $input = date('Y-m-d');
+        $result = mydate_empty_mysql_date($input);
+        $this->assertFalse($result, $description);
+
 
     }
 
