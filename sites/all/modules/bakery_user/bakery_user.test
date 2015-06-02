@@ -1,41 +1,31 @@
 <?php
 /**
  * @file
- * Tests for the hello world module.
+ * Tests for the Bakery User module.
  */
 class BakeryUserTests extends DrupalWebTestCase {
-    protected $privileged_user;
-    /**
-     * Metadata about our test case.
-     */
+
     public static function getInfo() {
         return array(
-            // The human readable name of the test case.
             'name' => 'Bakery User Tests',
-            // A short description of the tests this case performs.
             'description' => 'Tests for the Bakery User module.',
-            // The group that this case belongs too, used for grouping tests together
-            // in the UI.
             'group' => 'Epicodus Examples Tests',
         );
     }
 
-    /**
-     * Perform any setup tasks for our test case.
-     */
     public function setUp() {
         parent::setUp(array('bakery_user'));
-        //create node here: basic page to navigate to because ours is stored in db, not created in code in the bakery_user module.
-        //to create that content, we need to have a signed in user with permission to create content.
-        //$info = the information needed to recreate the basic page at the url `welcome_new_user`.  
 
         $user = $this->drupalCreateAdminUser();
         $this->drupalLogin($user);
 
+        //create node here: basic page to navigate to because ours is stored in db, not created in code in the bakery_user module.
+        //to create that content, we need to have a signed in user with permission to create content.
+        //$info = the information needed to recreate the basic page at the url `welcome_new_user`.  
         $info = array();
         $info['title'] = "Welcome!";
         $info["body[und][0][value]"] = "Welcome to Cameron's!";
-        //found the URL to post the form to by manually clicking to the Add Content menu and clicking o Page.
+        //found the URL to post the form to by manually clicking to the Add Content menu and clicking on Page.
         $this->drupalPost('node/add/page', $info, t('Save'));
 
         //set new page to the correct path. We know this will be node/1 because we are starting from scratch.
@@ -52,13 +42,6 @@ class BakeryUserTests extends DrupalWebTestCase {
         return user_save($user);
     }
 
-    public function drupalCreateAuthenticatedUser(array $permissions = array()) {
-        $roles = user_roles();
-        $index = array_search('authenticated', $roles);
-        $user = $this->drupalCreateUser($permissions);
-        $user->roles[$index] = 'authenticated';
-        return user_save($user);
-    }
 
     public function testWelcomeNewUser() {
         // We want to navigate to the welcome_new_user page on user login. So before we check if the login hook works, make sure the page is there in this first test.
@@ -67,6 +50,14 @@ class BakeryUserTests extends DrupalWebTestCase {
         $this->drupalGet('welcome_new_user');
         // Verify that the text "Welcome to Cameron's!", exists on the page.
         $this->assertText("Welcome to Cameron's!", 'The text on the page is correct. Hoorah!');
+    }
+
+    public function drupalCreateAuthenticatedUser(array $permissions = array()) {
+        $roles = user_roles();
+        $index = array_search('authenticated', $roles);
+        $user = $this->drupalCreateUser($permissions);
+        $user->roles[$index] = 'authenticated';
+        return user_save($user);
     }
 
     public function testLoginWelcome() {
