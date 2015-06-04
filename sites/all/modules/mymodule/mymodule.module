@@ -1,6 +1,6 @@
 <?php
 function mymodule_menu() {
-    $items['path-to-ajax/%/%node'] = array(
+    $items['path-to-ajax/%/%'] = array(
             'access arguments' => array('access content'),
             'page callback' => 'mymodule_ajax_callback',
             'page arguments' => array(1,2),
@@ -9,10 +9,10 @@ function mymodule_menu() {
     return $items;
 }
 
-function mymodule_ajax_callback($js, $node) {
+function mymodule_ajax_callback($js, $node_id) {
+  $node = node_load($node_id);
   // If the nojs didn't get changed to ajax, the user has no javascript.
   // Send them to the regular node page instead.
-    drupal_set_message('hi');
 
   if ($js == 'nojs') {
     drupal_goto('node/' . $node->nid);
